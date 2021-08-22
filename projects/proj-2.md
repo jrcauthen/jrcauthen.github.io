@@ -39,7 +39,11 @@ The initial tests are nice to see, but they aren’t really indicative of how th
 
 #### Choosing the the ML models
 
+Obviously the decision tree is far too simplistic for use in a critical application. Small changes in data, such as a "unique" fall, could dramatically change how the tree classifies a movement. I liked the idea of using a tree-based method here, however, so I went with a gradient booster algorithm. The gradient booster is similar to a random forest, in that it uses many weak classifiers - the shallow decision trees - to classify movements. However, the gradient booster weighs the more difficult to classify movements more heavily than those that are easy to classify, and the next tree is trained using the modified tree/weights. In this way, the many weak learners become strong learners. But I didn't want to look at just one possibility - that would be rather boring, right? What about using something like a Gaussian Mixture Model (GMM)? 
+
 {% include image.html image="projects/proj-2/densities.png" %}
+
+The image above demonstrates the core idea of a GMM. Distributions of falls should look different from nonfalls, and therefore, should be able to be differentiated by looking at the distribution. Using a GMM would be also be optimal for memory-saving reasons - they only need to store the mean and standard deviations of a movement type to make classifications. And assuming falls are different enough from ADLs and near-falls, their distributions should be different enough to differentiate movements based on these statistical properties. So in the end, I investigated two different models - the gradient booster classifier and the GMM.
 
 #### Developing the real-time model
 
