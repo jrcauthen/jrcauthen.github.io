@@ -2,7 +2,7 @@
 layout: post
 title: 'Fall detection in hearing aids'
 ---
-I was very lucky to start my career at an innovative hearing aid technology company. I learned so much and was given so much freedom to explore ideas – it really could not have been a better place to grow as an engineer. This post touches on my first project during my time there, and while I can’t share any code due to some proprietary features involved, I can discuss it.
+I was very lucky to start my career at an innovative hearing aid technology company. I learned so much and was given so much freedom to explore ideas – it really could not have been a better place to grow as an engineer. This post touches on my first project during my time there, and while I can’t share any code due to some proprietary features involved, I *can* discuss it.
 
 
 ## Requirements and constraints
@@ -11,7 +11,7 @@ I was tasked with evaluating whether it was possible to reliably assess if a use
 A secondary objective of this project was to evaluate the contribution that a gyroscope would make to a fall detection system. It was assumed that a gyroscope can indeed aid fall detection by mitigating false positives, e.g., sitting down very quickly. However, gyroscopes are resource intensive devices – they require a constant electrical current to operate – which would significantly degrade battery life. Finally, I was to investigate the effect that sampling rates played on the prediction.
 
 
-Of course, this sounds like an ideal case for machine-learning-based approaches. However, remember that hearing aids are very small devices with extremely limited memory – accordingly, the model would have to be extremely small. This means that deep learning approaches were immediately ruled out, as even small DL models require tens of thousands of parameters to store in memory. Not only deep learning was ruled out – useful classical machine learning approaches such as support vector machines also could not be used, as they require each sample to be stored in memory. All of these tasks and constraints made for a very interesting problem, and I hope that by the end of this post, you’ll agree as well.
+Of course, this sounds like an ideal case for machine-learning-based approaches. However, remember that hearing aids are very small devices with *extremely* limited memory – accordingly, the model would have to be *extremely* small. This means that deep learning approaches were immediately ruled out, as even small DL models require tens of thousands of parameters to store in memory. Not only deep learning was ruled out – useful classical machine learning approaches such as support vector machines also could not be used, as they require each sample to be stored in memory. All of these tasks and constraints made for a very interesting problem, and I hope that by the end of this post, you’ll agree as well.
 
 
 ## First look at the data
