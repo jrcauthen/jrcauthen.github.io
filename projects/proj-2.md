@@ -36,7 +36,7 @@ After much thinking and analyzing various movements, I came up with a handful of
 
 Features can be considered useful or representative of different movement types if their histograms are fairly separate from one another. In other words, if they have little overlap with other movement types. For my purposes, it was not important that near-falls and ADLs have too much overlap. The importance lay with a high degree of separability between the fall movement from the others. The features shown above are some of the more interesting features that I found. After having found my features, it was time to make a first prototype model to test how difficult the classification process would be. For this simple prototype, I chose to go with a decision tree for its ease of use. Initial tests were quite promising, showing approximately 97% accuracy using both the accelerometer and gyroscope.
 
-{% include image.html image="projects/proj-2/initial_conmatrix.png" %}
+{% include image.html image="projects/proj-2/initial-conmatrix.png" %}
 
 The initial tests are nice to see, but they aren’t really indicative of how the system would perform in a real-time setting. The model is seeing the entire movement in a 10s – 15s vector, whereas in a real-time system, the model would be looking at much shorter intervals – intervals that are far too short to fit the entire movement. 
 
@@ -52,7 +52,7 @@ Having finally obtained the primary dataset (in which I was lucky enough to both
 
 Real-time systems are typically developed to read data in overlapping chunks or frames. However, the data was not labeled on a per-frame basis – rather each movement consisted of a start time and end time, and it was the individual samples between these start and end times that were labeled. This meant that each recording needed to be broken into frames and relabeled according to the original labels. Don’t forget that each recording needed to be resampled to find the ideal sampling frequency!
 
-{% include image.html image="projects/proj-2/resampling_labels.png" %}
+{% include image.html image="projects/proj-2/resampling-labels.png" %}
 
 But this too, held another challenge. For fall movements, subjects lay often simulated a loss of consciousness, which was also labeled as part of a fall. Obviously, a subject lying down or resting should not be labeled as a fall. However, that simulated unconsciousness is crucial to determining if a fall had occurred. Therefore, a function was written that would intelligently separate each movement into frames and relabel the frames based on the amount of energy in the signal and by slicing any excess “unconsciousness time.” After the signal was broken into frames, the features were extracted, and the label added to each feature vector. These feature vectors were then concatenated to one another to form a final feature matrix – one for each sampling frequency.
 
