@@ -21,7 +21,6 @@ The datasets contained fall, activities of daily life (ADLs), and near-fall move
 {% include image.html image="projects/proj-2/fall-vs-nearfall.png" %}
 {% include image.html image="projects/proj-2/fall-vs-nearfall_mag.png" %}
 
-
 As usual, before we can do any real analysis however, I had to clean the data. Both datasets contained a few missing rows, so nothing major there. Just get rid of those rows. The file structures, however, were quite different from one another. The movements needed to be in the correct folders, and, since the datasets had different sampling rates, they needed to be resampled. This cleaning up, resampling, and reorganization process was done with various functions developed using MATLAB. In the end, I had a small dataset of approximately 3,700 movements.
 
 #### Feature extraction
