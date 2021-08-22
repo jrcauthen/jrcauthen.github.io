@@ -5,7 +5,7 @@ title: 'Fall detection in hearing aids'
 
 I was very lucky to start my career at an innovative hearing aid technology company. I learned so much and was given so much freedom to explore ideas – it really could not have been a better place to grow as an engineer. This post touches on my first project during my time there, and while I can’t share any code due to some proprietary features involved, I can discuss it.
 
-## Requirements and constraints
+### Requirements and constraints
 
 I was tasked with evaluating whether it was possible to reliably assess if a user had fallen using only an inertial measurement unit (IMU) located in the user’s hearing aids. The IMU consisted of an accelerometer to measure the rate of change of the user’s motion and a gyroscope to measure the orientation of the user.
 A secondary objective of this project was to evaluate the contribution that a gyroscope would make to a fall detection system. It was assumed that a gyroscope can indeed aid fall detection by mitigating false positives, e.g., sitting down very quickly. However, gyroscopes are resource intensive devices – they require a constant electrical current to operate – which would significantly degrade battery life. Finally, I was to investigate the effect that sampling rates played on the prediction.
