@@ -38,7 +38,9 @@ Features can be considered useful or representative of different movement types 
 
 The initial tests are nice to see, but they aren’t really indicative of how the system would perform in a real-time setting. The model is seeing the entire movement in a 10s – 15s vector, whereas in a real-time system, the model would be looking at much shorter intervals – intervals that are far too short to fit the entire movement. 
 
-#### Deciding on the ML model
+#### Choosing the the ML models
+
+{% include image.html image="projects/proj-2/densities.png" %}
 
 #### Developing the real-time model
 
