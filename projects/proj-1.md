@@ -89,7 +89,7 @@ One common way to deal with missing data is to simply drop the respective rows. 
 
 {% include image.html image="projects/proj-1/hists.png" %}
 
-The histograms of the variables aren’t very normal – only the temperature is normal – so let’s impute the missing values with the columns median value. I’ll be using scikit-learn’s SimpleImputer class for this task.
+The histograms of the variables aren’t very normal – only the pressure is normal – so let’s impute the missing values with the columns median value. I’ll be using scikit-learn’s SimpleImputer class for this task.
 
 ```
 from sklearn.impute import SimpleImputer
