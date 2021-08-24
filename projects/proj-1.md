@@ -206,7 +206,7 @@ plt.legend()
 
 {% include image.html image="projects/proj-1/24h_validation_training.png" %}
 
-Okay! That’s not awful! Validation accuracy is around ~98.7%, that might just work. Let's see how it works against the testing set - following the same routine as our training set:
+Okay! That’s not awful! We might be overfitting towards the end around epoch 8, but that could just be a result of the stochastic nature. Either way, validation accuracy is around ~98.7%, that might just work. Let's see how it works against the testing set - following the same routine as our training set:
 
 ```
 # initializing the test lists
@@ -224,7 +224,6 @@ x_test, y_test = np.array(x_test), np.array(y_test)
 # predicting our test set
 prediction = model.predict(x_test)    # shape: (8671, 24)
 ```
-
 
 By the way, this was not just a simple process where the first model I tried worked. The previous models suffered badly from overfitting initially. This final model is the end result of reducing model complexity, hidden units, increasing dropout rates, and increasing/decreasing the lookback attributes.
 
