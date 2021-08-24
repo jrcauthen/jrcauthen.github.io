@@ -191,7 +191,7 @@ model.compile(optimizer='adam', loss='mse')
 model.summary()
 ```
 
-add summary image
+{% include image.html image="projects/proj-1/model_summary.png" %}
 
 And let's get fitting!
 
@@ -204,7 +204,7 @@ plt.plot(history.history['val_loss'], label='Validation loss')
 plt.legend()
 ```
 
-add training and validation plot images
+{% include image.html image="projects/proj-1/24h_validation_training.png" %}
 
 Okay! That’s not awful! Validation accuracy is around ~98.7%, that might just work. Let's see how it works against the testing set - following the same routine as our training set:
 
@@ -225,7 +225,6 @@ x_test, y_test = np.array(x_test), np.array(y_test)
 prediction = model.predict(x_test)    # shape: (8671, 24)
 ```
 
-plots
 
 By the way, this was not just a simple process where the first model I tried worked. The previous models suffered badly from overfitting initially. This final model is the end result of reducing model complexity, hidden units, increasing dropout rates, and increasing/decreasing the lookback attributes.
 
@@ -236,13 +235,13 @@ Should we expect this model to be as effective on live data? Ehh, maybe. There a
 1. Live data distribution may be different from the training data (Covariate shift)
 
    It looks like the general pollution values have been decreasing since 2013. This is good! Great even! But maybe not so good for our predictions, as we're used to seeing relatively high values of pollutants. Our model might not be able to predict the decreasing levels, especially since we only have data through the first quarter of 2017. We'll need to keep an eye on the distributions.
-   
+
 2. Relatively small dataset
 
   Three years really isn't a long time. We can continually add to the dataset however, by storing our current predictions and current weather/pollutant measurements in a database, and retraining the model when accuracy falls below an acceptable threshold.
-    
+
 3. The data is specific to the Dongsi neighborhood in Beijing, China
 
   It would be interesting to see if the model can predict pollution in other parts of the world, but that likely won't be the case. We have to be mindful that the model may not predict well even in other neighborhoods of Beijing
-  
+
 #### Deploying the model
