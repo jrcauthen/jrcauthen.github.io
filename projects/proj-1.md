@@ -238,10 +238,10 @@ Should we expect this model to be as effective on live data? Ehh, maybe. There a
 
 2. Relatively small dataset
 
-  Three years really isn't a long time. We can continually add to the dataset however, by storing our current predictions and current weather/pollutant measurements in a database, and retraining the model when accuracy falls below an acceptable threshold.
+     Three years really isn't a long time. We can continually add to the dataset however, by storing our current predictions and current weather/pollutant measurements in a database, and retraining the model when accuracy falls below an acceptable threshold.
 
 3. The data is specific to the Dongsi neighborhood in Beijing, China
 
-  It would be interesting to see if the model can predict pollution in other parts of the world, but that likely won't be the case. We have to be mindful that the model may not predict well even in other neighborhoods of Beijing
+     It would be interesting to see if the model can predict pollution in other parts of the world, but that likely won't be the case. We have to be mindful that the model may not predict well even in other neighborhoods of Beijing.
 
 #### Deploying the model
