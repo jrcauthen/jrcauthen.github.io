@@ -29,7 +29,15 @@ And reading in the data for some EDA.
 df = pd.read_csv('/content/Data/PRSA_Data_Dongsi_20130301-20170228.csv')
 df.head()
 ```
-add the image here
+{% include image.html image="projects/proj-1/df_head_start.png" %}
+
+Why not make some cool plots to study correlations?
+
+{% include image.html image="projects/proj-1/correlation_matrix.png" %}
+{% include image.html image="projects/proj-1/scatter_plots.png" %}
+
+It's not super suprising that the pollutants correlate with one another. And it makes sense that PM2.5 and PM10 correlate with one another. In general, it doesn't look like the weather features are particularly important when predicting PM2.5. Maybe the wind speed matters. There's a slight negative correlation there. Sounds reasonable to me.
+
 
 ```
 df.drop(columns=['No','station'], inplace=True)
@@ -66,14 +74,22 @@ df['wx'] = wind_speed*np.cos(directions)    # x_component of wind vector
 df['wy'] = wind_speed*np.sin(directions)    # y component of wind vector
 ```
 
-Add the peridoicity images here
+{% include image.html image="projects/proj-1/wind_with_speed.png" %}{% include image.html image="projects/proj-1/wind_bivariate.png" %}
+
 
 Nice, our model can now easily understand the periodicity of these inputs.
-Looking further into our data, it looks like there are quite a few rows with missing data – about 15%. One common way to deal with missing data is to simply drop the respective rows. We don’t particularly want to throw away 15% of data, so let’s look to impute the NaN values with either the columns mean value or median value. Which one we use depends on the distribution of the features - if they're mostly Gaussian, we'll use the mean. Otherwise, we'll use the median.
+Looking further into our data, it looks like there are quite a few rows with missing data – 22% of rows actually. 
+```
+# check how many nans there are in each column
+print(f'There are {df.isnull().sum().sum()} rows with missing values - {np.round(df.isnull().sum().sum() / df.shape[0] * 100)}% of rows are missing values')
 
-add distributions here
+>> There are 7600 rows with missing values - 22.0% of rows are missing values
+```
+One common way to deal with missing data is to simply drop the respective rows. We don’t particularly want to throw away 22% of data, so let’s look to impute the NaN values with either the columns mean value or median value. Which one we use depends on the distribution of the features - if they're mostly Gaussian, we'll use the mean. Otherwise, we'll use the median.
 
-The histograms of the variables aren’t very normal – only the precipitation and temperature are somewhat normal – so let’s impute the missing values with the columns median value. I’ll be using scikit-learn’s SimpleImputer class for this task.
+{% include image.html image="projects/proj-1/hists.png" %}
+
+The histograms of the variables aren’t very normal – only the temperature is normal – so let’s impute the missing values with the columns median value. I’ll be using scikit-learn’s SimpleImputer class for this task.
 
 ```
 from sklearn.impute import SimpleImputer
@@ -84,7 +100,7 @@ df.isnull().sum()   # confirming there are no more missing values
 df.head()
 ```
 
-add imputed image here
+{% include image.html image="projects/proj-1/df_head_after_imputation.png" %}
 
 Cool, no more missing values. But we aren’t done yet. See how our columns have very different ranges of values (we can use df.describe() to check out the stats on that, by the way) and are in different units? That’s going to be a problem if we don’t want (hint: we don’t) any column to dominate the others during training. To fix this, we can scale each feature to fit within the same range of values. We have a couple of options here, with the two most common likely to be a standardization approach and a min-max-scaling approach. Standardization will subtract the feature mean from the value and then divide by the feature’s standard deviation to restrict the features into the same range, while min-max-scaling will scale the features to be between 0 and 1. Remembering that our features aren’t exactly normally distributed, we will opt to go for the min-max-scaling strategy. We’ll use scikit-learn’s MinMaxScaler class for this task as well. However, we can’t scale our data just yet. Scaling now will lead to a form of train-test contamination by exposing information about our unseen testing data. We must first split our data into training and testing sets. This time, we can’t just take a random sample of our data and assign it to training and testing – remember, we’re working with time series data and the context matters! So, for this project we will take just the last 25% of all rows and assign them to be testing data. We have to be aware here though, that this could make our testing set unbalanced, as it’s unlikely that we can get an entire year and are instead looking only at the cold weather months. 
 
@@ -107,6 +123,8 @@ print(df.shape)
 print(train_df.shape)
 print(test_df.shape)
 ```
+{% include image.html image="projects/proj-1/shapes.png" %}
+
 
 Okay, that looks good. The shapes check out. Our data is sufficiently cleaned up, split into two distinct training and testing sets, and we can start to think about how to build our prediction model. 
 
@@ -138,7 +156,7 @@ print(f'x_train shape = {x_train.shape}')
 print(f'y_train shape = {y_train.shape}')
 ```
 
-add shape image
+{% include image.html image="projects/proj-1/np_array_shapes.png" %}
 
 Finally, we’re ready to set up our model. I’m stacking 2 LSTMs with a dropout layer between them to help counter overfitting. I’m using a tanh activation function because I found that using a typical RELU function caused my gradients to explode. I’m also defining a callback function to automatically save the model if the validation loss decreases.
 
