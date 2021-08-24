@@ -122,8 +122,11 @@ test_df = pd.DataFrame.from_records(scaler.fit_transform(test_df),columns=df.col
 print(df.shape)
 print(train_df.shape)
 print(test_df.shape)
+
+>> (35064, 14)
+>> (26298, 14)
+>> (8766, 14)
 ```
-{% include image.html image="projects/proj-1/shapes.png" %}
 
 
 Okay, that looks good. The shapes check out. Our data is sufficiently cleaned up, split into two distinct training and testing sets, and we can start to think about how to build our prediction model. 
@@ -154,9 +157,10 @@ for i in range(lookback, len(train_df) - num_future +1):
 x_train, y_train = np.array(x_train), np.array(y_train)
 print(f'x_train shape = {x_train.shape}')
 print(f'y_train shape = {y_train.shape}')
-```
 
-{% include image.html image="projects/proj-1/np_array_shapes.png" %}
+>> x_train shape = (26203, 72, 14)
+>> y_train shape = (26203, 24)
+```
 
 Finally, we’re ready to set up our model. I’m stacking 2 LSTMs with a dropout layer between them to help counter overfitting. I’m using a tanh activation function because I found that using a typical RELU function caused my gradients to explode. I’m also defining a callback function to automatically save the model if the validation loss decreases.
 
