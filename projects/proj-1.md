@@ -184,4 +184,40 @@ plt.legend()
 
 add training and validation plot images
 
-Okay! That’s not awful! 
+Okay! That’s not awful! Validation accuracy is around ~98.7%, that might just work. Let's see how it works against the testing set - following the same routine as our training set:
+
+```
+# initializing the test lists
+x_test = []
+y_test = []
+
+# separating the inputs from the labels
+for i in range(lookback, len(test_df) - num_future +1):
+  x_test.append(test_df.iloc[i - lookback:i, 0:test_df.shape[1]])
+  y_test.append(test_df.iloc[i:i + num_future, 0])
+
+# converting lists to numpy arrays
+x_test, y_test = np.array(x_test), np.array(y_test)
+
+# predicting our test set
+prediction = model.predict(x_test)    # shape: (8671, 24)
+```
+
+plots
+
+By the way, this was not just a simple process where the first model I tried worked. The previous models suffered badly from overfitting initially. This final model is the end result of reducing model complexity, hidden units, increasing dropout rates, and increasing/decreasing the lookback attributes.
+
+#### Considerations, or a healthy dose of skepticism
+
+Should we expect this model to be as effective on live data? Ehh, maybe. There are a few issues with the data. Let's talk about them.
+
+1. Live data distribution may be different from the training data (Covariate shift)
+   It looks like the general pollution values have been decreasing since 2013. This is good! Great even! But maybe not so good for our predictions, as we're used to seeing relatively high values of pollutants. Our model might not be able to predict the decreasing levels, especially since we only have data through the first quarter of 2017. We'll need to keep an eye on the distributions.
+   
+2. Relatively small dataset
+  Three years really isn't a long time. We can continually add to the dataset however, by storing our current predictions and current weather/pollutant measurements in a database, and retraining the model when accuracy falls below an acceptable threshold.
+    
+3. The data is specific to the Dongsi neighborhood in Beijing, China
+  It would be interesting to see if the model can predict pollution in other parts of the world, but that likely won't be the case. We have to be mindful that the model may not predict well even in other neighborhoods of Beijing
+  
+#### Deploying the model
