@@ -11,11 +11,10 @@ menu:
 # Projects Section
 
 projects:
-- {name: 'Developing and Deploying an LSTM to Predict Air Pollution',   url: 'proj-1'}
-- {name: 'Fall Detection',   url: 'proj-2'}
-- {name: 'Monitoring Twitter for illegal wildlife trade', url: 'proj-3'}
-- {name: 'Prototyping an asset tracking system with MIOTY',  url: 'proj-4'}
-- {name: 'Project Five',  url: 'proj-5'}
+- {name: 'Building and Deploying an LSTM to Predict Air Pollution',   url: 'proj-1'}
+- {name: 'In-ear Fall Detection system',   url: 'proj-2'}
+- {name: 'Monitoring Twitter for Illegal Wildlife Trade', url: 'proj-3'}
+- {name: 'Prototyping an Asset Tracking System with MIOTY',  url: 'proj-4'}
 
 #-------------------------------
 # Contact Section
