@@ -254,8 +254,8 @@ For 12 hours into the future, we have:
 
 And for 1 hour into the future:
 
-{% include image.html image="projects/proj-1/1_hour1_later_training_final.png" %}
-{% include image.html image="projects/proj-1/1_hour1_later_final.png" %}
+{% include image.html image="projects/proj-1/1_hour_later_training_final.png" %}
+{% include image.html image="projects/proj-1/1_hour_later_final.png" %}
 ```
 >> Test RMSE: 23.108
 >> Test MAE: 12.887
