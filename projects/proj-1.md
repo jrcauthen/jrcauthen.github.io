@@ -137,7 +137,7 @@ Because we’re working with time series data, we want to capture as much of the
 
 By the way, if we were hoping to implement our prediction model on a small, memory-constrained device, it might be possible to use tree-based methods such as a random forest or gradient boosting algorithm and transform numerous samples (rows) into a single vector, similar to what we’ll be doing with our LSTM model, to predict air pollution. 
 
-Before setting up the model, we need to decide how far back we want to look and how far into the future we want to predict. I’m interested in seeing how well we can predict one hour into the future, 12 hours into the future, and 1 day into the future. I think we should be able to do that with 3 days of data. The data is hourly, so we will need 24 rows * 3 days = 72 rows of lookback data, and a prediction 1, 12, and 24 hours into the future. 
+Before setting up the model, we need to decide how far back we want to look and how far into the future we want to predict. I’m interested in seeing how well we can predict one hour into the future, 12 hours into the future, and 1 day into the future. I think we should be able to do that with 3 days of data. The data is hourly, so we will need 24 rows * 3 days = 72 rows of lookback data, and a prediction 1, 12, and 24 hours into the future. We'll start by looking at predicting 24 hours in the future.
 
 ```
 num_days = 3    # past days on which to make a prediction
@@ -193,7 +193,7 @@ model.summary()
 
 {% include image.html image="projects/proj-1/model_summary.png" %}
 
-And let's get fitting!
+And let's get fit?..fitting? Let's fit!
 
 ```
 # fit the model
@@ -223,7 +223,48 @@ x_test, y_test = np.array(x_test), np.array(y_test)
 
 # predicting our test set
 prediction = model.predict(x_test)    # shape: (8671, 24)
+
+# plotting ...
+
+# grabbing some metrics
+from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_absolute_error
+
+# calculate RMSE and MAE
+rmse = np.sqrt(mean_squared_error(original_24h, prediction[:,0]))
+print('Test RMSE: %.3f' % rmse)
+mae = (mean_absolute_error(original_24h, prediction[:,0]))
+print('Test MAE: %.3f' % mae)
+
+>> Test RMSE: 90.543
+>> Test MAE: 58.332
 ```
+{% include image.html image="projects/proj-1/24_hours_later_final.png" %}
+
+All right, our MAE is off by 58 points, which isn't great. That *could* be the difference between safe and unsafe air. We're also really punished by the RMSE, since the model guesses very poorly when the actual pollution is very high. Interesting. Let's look at the metrics and plots for predictions 12 hours and 1 hour into the future. 
+
+For 12 hours into the future, we have:
+
+{% include image.html image="projects/proj-1/12_hours_later_training_final.png" %}
+{% include image.html image="projects/proj-1/12_hours_later_final.png" %}
+```
+>> Test RMSE: 82.494
+>> Test MAE: 56.215
+```
+
+And for 1 hour into the future:
+
+{% include image.html image="projects/proj-1/1_hour1_later_training_final.png" %}
+{% include image.html image="projects/proj-1/1_hour1_later_final.png" %}
+```
+>> Test RMSE: 23.108
+>> Test MAE: 12.887
+```
+
+Our next hour prediction is very good, but come on, it should be. The air won't clear up or become heavily polluted in just one hour. Our 12 hour prediction isn't *much* better than the 24 hour prediction, although it is a little better at predicting higher values of pollution. In general, it seems like we aren't going to be able to accurately predict the amount of PM2.5 in the air more than a few hours out from the present condition. 
+
+**Bottom line - maybe don't trust the forecast if you have asthma**
+
 
 By the way, this was not just a simple process where the first model I tried worked. The previous models suffered badly from overfitting initially. This final model is the end result of reducing model complexity, hidden units, increasing dropout rates, and increasing/decreasing the lookback attributes.
 
