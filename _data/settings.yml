@@ -11,7 +11,7 @@ menu:
 # Projects Section
 
 projects:
-- {name: 'Deploying and maintaining an LSTM',   url: 'proj-1'}
+- {name: 'Developing and Deploying an LSTM to Predict Air Pollution',   url: 'proj-1'}
 - {name: 'Fall Detection',   url: 'proj-2'}
 - {name: 'Monitoring Twitter for illegal wildlife trade', url: 'proj-3'}
 - {name: 'Prototyping an asset tracking system with MIOTY',  url: 'proj-4'}
