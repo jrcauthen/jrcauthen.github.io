@@ -24,13 +24,16 @@ Knowing that there are two types of fundamental data I want to store, two tables
 
 #### Natural Language Processing 
 Before analyzing the tweets, there is a lot of preprocessing that needs to be done. This preprocessing can be broken down into the following steps:
-1.	Cleaning up the tweet
+1.	**Cleaning up the tweet**
+
    This will consist of removing hyperlinks, usernames, emojis, invalid characters (for example, removing ‘ö’,’ü’,’ä’, etc. when examining English language tweets), stop-words, and punctuation marks. This step requires making use an external library such as nltk and genism or one can make extensive use of regular expressions. I chose to practice using regular expressions to clean up the tweets, but we’ll use the nltk package later, don’t worry.
 
-2.	Bringing the remaining tweet text into a “normal” format
+2.	**Bringing the remaining tweet text into a “normal” format**
+
    This includes making all characters lowercase and then either stemming or lemmatizing all words. Lemmatizing refers to the process of reducing words to their base form. An example of this is changing the words “running” and “ran” to “run” and changing plural nouns to their singular equivalent – “animals” to “animal.”
 
-3.	Creating the biterms themselves
+3.	**Creating the biterms themselves**
+
    This step is comprised of generating a word-document matrix and extracting the biterms from the word-document matrix.
    
 There’s a little too much code to show off here, so visit the project repository to take a look at the respective functions.
