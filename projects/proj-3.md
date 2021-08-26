@@ -85,7 +85,7 @@ def generate_word_document_matrix(corpus: pd.Series) -> np.array:
 
 With the word-document matrix created, we can then look at each index of words per document and combine them to form our biterms. The biterms and total vocabulary are passed to the model, which creates the topics/clusters. Let’s take a look.
 
-{% include image.html image="projects/proj-3/btm_stream.html" %}
+{% include image.html image="projects/proj-3/btm_stream_cluster1.png" %}
 
 Hmm…there are many overlapping clusters right in the center with a few distinct topics spread out along mostly the first principal component. There don’t seem to be any obvious clusters that could be related to wildlife trafficking either. Unfortunately, this isn’t much of a surprise. The quality of the tweets doesn’t seem to be great… and combined the with knowledge that the original paper reported *extremely* noisy data with very few positive IDs for wildlife trafficking, it was always going to be a bit of a stretch. Maybe there will be better results if we try again with the search API.
 
@@ -104,11 +104,11 @@ The second key challenge when using the search API is limited range of tweets. T
 
 And after applying the same NLP techniques and passing the biterms to our BTM model just as with the streaming API, we get the following clusters:
 
-{% include image.html image="projects/proj-3/btm_search_api_20k.html" %}
+{% include image.html image="projects/proj-3/btm_search_20k_cluster5.png" %}
 
 Again, we see a high concentration of topics around the center, with the more distinct clusters (and most of the variance) along the first principal component. Topic 5 seems to be the most closely related cluster to the potential sale of ivory – but closer inspection shows that this topic is most likely about *banning* the sale of ivory. Such a small dataset likely warrants fewer topics, which is the probable reason that there are so many overlapping clusters. Let’s see how the topic distribution looks with half the number of topics.
 
-{% include image.html image="projects/proj-3/btm_search_api_10k.html" %}
+{% include image.html image="projects/proj-3/btm_search_cluster5.png" %}
 
 This already seems a bit more promising judging strictly by the topic distribution. Cluster 2,3, and 5 all have high occurrences of ivory-specific keywords and general commerce keywords. But a more thorough review of the tweets showed that there were positive hits of ivory sales. 
 
