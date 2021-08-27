@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Getting Started"
+title: "Estimating Farm Health Using Satellite Imagery"
 ---
 
 In the early Spring of this year, I read a heartbreaking, yet enlightening book called Ocean of Life, by Callum Roberts. This book explains in painful detail how humans are destroying the ocean, wreaking havoc on its ecosystem, and the disastrous effects the earth is feeling as consequences of man-made climate change. There was a chapter in this book that discussed how modern agriculture has damaged the oceans, with some of the key players being nutrient run off and unearthing carbon stored underground. It was right around this time as well that I happened to find an invitation to join an open-source community, part of a Google-backed startup named [*Climate Farmers*](https://www.climatefarmers.org), that was fighting climate change by enabling regenerative agriculture at scale, with a focus on small farms. The timing was uncanny. Riding a wave of urgency and enthusiasm to learn more about regenerative and how we as humans can use these practices to actually save the world, I joined my first welcome call and have been actively involved ever since. After a few months of working diligently to share my knowledge and learn from others, I was invited to join the internal team and have since been incorporated as full-fledged part of Climate Farmers. 
