@@ -5,6 +5,9 @@ title: 'Prototyping an Asset Tracking System with MIOTY'
 
 For this post I’d like to talk about an IoT system I prototyped for a local company here in Nürnberg, Germany as part of my bachelor’s thesis. This company specializes in the logistics of transport, set-up, and teardown of trade conferences all around Europe. The company was fortunate enough to grow their business to a point that it was becoming more and more difficult to manage their resources and assets effectively. Among these difficulties were issues with theft from conferences and trade shows, poor capacity and resource management due to complex communication channels, and a lack of an automatic reporting system to track assets and notify management of state changes. Therefore, the goal of this thesis was to build an asset tracking system based on IoT principles using Low-Power Wide-Area Network (LPWAN) modules. 
 
+{% include image.html image="projects/proj-4/asset_tracking_system.png" %}
+
+
 
 #### System requirements
 
@@ -20,13 +23,15 @@ From the point of view of the client company, there were four key system require
 
 #### System design
 
-Image 
+{% include image.html image="projects/proj-4/overview.png" %}
 
 Above is a high-level overview of the asset tracking system. The system comprises a network of transceivers (up to 200,000(!) are planned for the final implementation) attached to individual inventory items, an IoT communication protocol, two databases, and the ERP interface. 
 
 ##### Communication protocol
 
 On the left are the LPWAN transceivers – these transceivers send messages about the location and the item’s state (only the location message is shown here) using the MIOTY protocol to a central location, the MQTT broker, to be distributed later to interested parties/devices. MQTT is a Machine-to-Machine (M2M) messaging protocol designed specifically for use by IoT devices and relies on a bidirectional publish-subscribe model to transport its messages. The transceivers send information to their respective base stations, the information is decoded, and then uploaded to the MQTT broker under a certain topic (location, state, etc.), which acts a distribution center. The MQTT broker then “publishes” the messages to each device (the client) that “subscribes” to the designated topic. MQTT works so well for this project because it doesn’t require that the various devices know how to communicate with one another – they only have to know how to communicate with the broker. This is an ideal scenario for modular systems. 
+
+{% include image.html image="projects/proj-4/mqtt.png" %}
 
 ##### Data storage
 
@@ -53,13 +58,16 @@ Automatic events, however, serve as the main monitoring tool of the system. Ther
 
 ##### ERP interface
 
-The final piece of the system is the ERP interface. The client company’s current ERP has a tabular structure, and as such, tabular inputs are ideal. Therefore, all data that is recorded by event triggers are placed into a CSV file, which acts as a simple and efficient ERP interface.
+The final piece of the system is the ERP interface. The client company’s current ERP has a tabular structure, and as such, tabular inputs are ideal. Therefore, all data that is recorded by event triggers are placed into a CSV file, which acts as a simple and efficient ERP interface. The final view of the interface is shown below.
+
+{% include image.html image="projects/proj-4/erp-interface.png" %}
 
 #### Prototype and realization
 
 To give the client company a visual representation of how the asset tracking would perform in a live environment, an Apache HTML server was setup and hosted on a local environment. A simple webpage was created to allow a user to pass values for a manual event/request. After registering a manual event, the user would be redirected to a second webpage showing the current state of the requested inventory. In addition, an interactive map using the leafly.js library was included to allow management to visually see the location of an item. The web pages can be seen below.
 
-images
+{% include image.html image="projects/proj-4/landing.png" %}
+{% include image.html image="projects/proj-4/inventory.png" %}
 
 Since the transceiver modules were not yet live at the time, pseudo-nodes were created, which would randomly draw from a previously created distribution of values for each sensor type and then send that data in predefined intervals. To simulate failure, each node was also assigned a probability of failure. These nodes continually passed information to the MQTT broker, which would then pass on the data to MongoDB and, if necessary, to the ERP interface. Each triggered manual or automatic event appended to a CSV file, which was available to download at any moment. All scripts for this thesis were written using Python with the exception of the interactive map, which was written using javascript. 
 
@@ -67,4 +75,3 @@ Since the transceiver modules were not yet live at the time, pseudo-nodes were c
 This was a very educational experience, and I was thrilled to have a thesis that dealt so much on a practical topic, rather than a purely academic thesis. I learned a lot about wireless technologies, IoT devices and topics, and how to translate requests and ideas from management into useable code and features. The client company was also very pleased with the system for which I was also very pleased, since that had an obvious influence on my final grade 😉
 
 
-{% include image.html url="http://www.gratisography.com" image="projects/proj-4/bike.jpg" %}
