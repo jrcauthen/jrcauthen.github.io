@@ -2,6 +2,7 @@
 layout: post
 title: 'Fall detection in hearing aids'
 ---
+**Tech used: Scikit-learn, accelerometer, gyroscope**
 
 I was very lucky to start my career at an innovative hearing aid technology company. I learned so much and was given so much freedom to explore ideas – it really could not have been a better place to grow as an engineer. This post touches on my first project during my time there, and while I can’t share any code due to some proprietary features involved, I can discuss it.
 
