@@ -5,7 +5,7 @@ title: 'Monitoring Twitter For Illegal Wildlife Trade'
 
 *This project is currently ongoing, and as such, is updated on a continual basis.*
 
-**Tech used: data mining, PostgreSQL, natural language processing
+**Tech used: data mining, PostgreSQL, natural language processing**
 
 Conservation and conservation justice is a topic that is very dear to my heart. Endangered species are under constant threat from poachers, traffickers, and sellers of “luxury” or “medicinal” wildlife products. The trade of trafficked wildlife and flora is moving increasingly online in an effort to globalize black markets and social media acts a valuable advertisement network. By monitoring and removing wildlife trafficking content, traffickers lose a crucial element of their online business and can be quickly identified and apprehended, both of which would serve as an incredible victory in the fight against illegal wildlife trade. This project is an attempt at making a small contribution to this fight. I expect this to be a very difficult project: in the paper linked below, very few positive hits were found (43 out of 133,584 tweets – 0.0003% of all tweets!). This coupled with the fact that this is my first attempt at a natural-language-processing-oriented ML project, success might be difficult to come by. But overcoming the difficult challenges are what define us, and the reward for such a topic is too great to give up on. In short, the juice is well worth the squeeze. 
 
