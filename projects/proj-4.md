@@ -2,6 +2,7 @@
 layout: post
 title: 'Prototyping an Asset Tracking System with MIOTY'
 ---
+**Tech used: LPWAN, MQTT, MySQL, MongoDB
 
 For this post I’d like to talk about an IoT system I prototyped for a local company here in Nürnberg, Germany as part of my bachelor’s thesis. This company specializes in the logistics of transport, set-up, and teardown of trade conferences all around Europe. The company was fortunate enough to grow their business to a point that it was becoming more and more difficult to manage their resources and assets effectively. Among these difficulties were issues with theft from conferences and trade shows, poor capacity and resource management due to complex communication channels, and a lack of an automatic reporting system to track assets and notify management of state changes. Therefore, the goal of this thesis was to build an asset tracking system based on IoT principles using Low-Power Wide-Area Network (LPWAN) modules. 
 
