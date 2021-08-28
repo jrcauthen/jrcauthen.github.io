@@ -7,7 +7,7 @@ title: 'Predicting Air Pollution from Time Series Data'
 *Unfortunately, after spending so much time searching for recent, free historical data regarding air pollution in Beijing, I came up with nothing. Various approaches were looked at, including web-scraping, long-term cron-jobs, modelling the pollution distributions and drawing from said distribution to return reasonable estimates – correlations and all…(this is actually a very interesting idea and I’m planning to write more about this later), and even __*gulp*__ *paying for data. None of these really panned out after deeper consideration for one reason or another, but in the spirit of this post, we’ll deploy the LSTM to Heroku and never leave the year 2017 (things were better then anyway).*
 
 ---
-**Tech used: Tensorflow, Keras, Scikit-learn
+**Tech used: Tensorflow, Keras, Scikit-learn**
 
 Having started (and continued) my career on the R&D side of things, I’ve seldom seen a project be carried through all the way to production and deployment. Trawling research papers, testing algorithms, prototyping systems, and all the data-sciencey-things you can think of are really cool! But applied research is a far cry from the polished, final products that we depend on. So, I found myself wanting to learn more about productionizing a product – the testing, maintenance, monitoring, and all the hard stuff that comes with it. This project is the culmination of that desire. 
 
