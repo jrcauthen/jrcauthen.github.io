@@ -61,7 +61,7 @@ Not *extremely* relevant. There are plenty of tweets that have one or more of th
 
 {% include image.html image="projects/proj-3/barplot_stream_final.png" %}
 
-“Medicine” and “trophy” are the only ivory keywords to even make it into the top 20 most frequent words. We can also check out the cooccurrence matrix to see how often certain word pairings occur together. This matrix below should be read as “How often a word in a column occurs when a word in a row is present, and vice-versa.” 
+“Medicine” and “trophy” are the only ivory keywords to even make it into the top 20 most frequent words. We can also check out the co-occurrence matrix to see how often certain word pairings occur together. This matrix below should be read as “How often a word in a column occurs when a word in a row is present, and vice-versa.” 
 
 {% include image.html image="projects/proj-3/cooccurence_matrix_stream_final.png" %}
 
@@ -100,7 +100,7 @@ ELEPHANT_KEYWORDS = ['ivory', 'tusk', 'carved', 'antique',
 GENERAL_KEYWORDS = ['sale','selling']
 ```
 
-The second key challenge when using the search API is limited range of tweets. The search API allows one to fetch a subset of relevant tweets from within the last week. However, if the same search is run a second time within the same week, the same tweets are returned. This means there will be duplicate tweets in the database. The only way I know to avoid this is to wait one week between each mining session. At the time of writing, the database has only 6,189 tweets, which is hardly enough for even simple tasks. This has slowed progress to a crawl, unfortunately, and I’m forced to work with a significantly smaller dataset. Despite these shortcomings, I will carry on with the analysis in hopes of finding a true signal. Looking again at the most common words and their cooccurrences: 
+The second key challenge when using the search API is limited range of tweets. The search API allows one to fetch a subset of relevant tweets from within the last week. However, if the same search is run a second time within the same week, the same tweets are returned. This means there will be duplicate tweets in the database. The only way I know to avoid this is to wait one week between each mining session. At the time of writing, the database has only 6,189 tweets, which is hardly enough for even simple tasks. This has slowed progress to a crawl, unfortunately, and I’m forced to work with a significantly smaller dataset. Despite these shortcomings, I will carry on with the analysis in hopes of finding a true signal. Looking again at the most common words and their co-occurrences: 
 
 {% include image.html image="projects/proj-3/barplot_search_final.png" %}
 {% include image.html image="projects/proj-3/cooccurence_matrix_search_final.png" %}
