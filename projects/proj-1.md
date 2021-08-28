@@ -4,7 +4,7 @@ title: 'Predicting Air Pollution from Time Series Data'
 ---
 **Note: This post is part of a series on productionizing ML models and is being actively developed as the project grows and as I learn more about MLOps and productionizing models**
 
-*Unfortunately, after spending so much time searching for recent, free historical data regarding air pollution in Beijing, I came up with nothing. Various approaches were looked at, including web-scraping, long-term cron-jobs, modelling the pollution distributions and drawing from said distribution to return reasonable estimates – correlations and all…(this is actually a very interesting idea and I’m planning to write more about this later), and even __*gulp*__ *paying for data. None of these really panned out after deeper consideration for one reason or another, but in the spirit of this post, we’ll deploy the LSTM to Heroku and never leave the year 2017 (things were better then anyway).*
+*Unfortunately, after spending so much time searching for recent, free historical data regarding air pollution in Beijing, I came up with nothing. Various approaches were looked at, including web-scraping, long-term cron-jobs, modelling the pollution distributions and drawing from said distribution to return reasonable estimates – correlations and all…(this is actually a very interesting idea and I’m planning to write more about this later), and even __*gulp*__ paying for data. None of these really panned out after deeper consideration for one reason or another, but in the spirit of this post, we’ll deploy the LSTM to Heroku and never leave the year 2017 (things were better then anyway).*
 
 ---
 **Tech used: Tensorflow, Keras, Scikit-learn**
