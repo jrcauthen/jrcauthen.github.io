@@ -4,10 +4,8 @@ title: 'Predicting Air Pollution from Time Series Data'
 ---
 **Note: This post is part of a series on productionizing ML models and is being actively developed as the project grows and as I learn more about MLOps and productionizing models**
 
-*Unfortunately, after spending so much time searching for recent, free historical data regarding air pollution in Beijing, I came up with nothing. Various approaches were looked at, including web-scraping, long-term cron-jobs, modelling the pollution distributions and drawing from said distribution to return reasonable estimates – correlations and all…(this is actually a very interesting idea and I’m planning to write more about this later), and even __*gulp*__ paying for data. None of these really panned out after deeper consideration for one reason or another, but in the spirit of this post, we’ll deploy the LSTM to Heroku and never leave the year 2017 (things were better then anyway).*
-
 ---
-**Tech used: Tensorflow, Keras, Scikit-learn**
+**Tech used: Tensorflow, Keras, Scikit-learn, Flask, PostgreSQL, Docker**
 
 Having started (and continued) my career on the R&D side of things, I’ve seldom seen a project be carried through all the way to production and deployment. Trawling research papers, testing algorithms, prototyping systems, and all the data-sciencey-things you can think of are really cool! But applied research is a far cry from the polished, final products that we depend on. So, I found myself wanting to learn more about productionizing a product – the testing, maintenance, monitoring, and all the hard stuff that comes with it. This project is the culmination of that desire. 
 
@@ -286,3 +284,60 @@ Should we expect this model to be as effective on live data? Ehh, maybe. There a
      It would be interesting to see if the model can predict pollution in other parts of the world, but that likely won't be the case. We have to be mindful that the model may not predict well even in other neighborhoods of Beijing.
 
 #### Deploying the model
+
+Having a working model is really cool, you know what's *really* cool? Other people using your model. But there are a lot of variables we have to consider when putting out a live model. First and foremost, we need a database. One table to store our historical data and a second table to store our predictions. It's important to have a database of predictions so that we can track how well the model is performing. Likewise, we need to continue to store historical data so that we can retrain the model if certain thresholds are exceeded, such as an error metric. Second, from where will this new data come? We can't just wait for data sets to fall in our laps on a continuous basis. We'll also need to transform our new data to fit the same format as our training data. Finally, *how* can we share our model to show off the hard work we put in? There are tons of good possibilities here, and we'll consider a few.
+
+We have nice, structured data that works perfectly as a table, so it only makes sense to a relational DB. I'll use PostgreSQL. As discussed we'll need two tables, a prediction table and a table to store historical data. The history table will look identical to the training data and will be made up of the SQL data type "real." The prediction table only needs a datetime column and the target PM2.5 column. 
+
+```
+import psycopg2   # postgresql/python interface
+import yaml
+
+# loading the configuration files
+# you ARE using configuration files, right?
+try:
+    with open('config.yaml', 'r') as file:
+        config = yaml.safe_load(file)
+except Exception as e:
+    print('Error reading configuration file.')
+    
+# db connection
+cnx = psycopg2.connect(
+    database = config['DATABASE'],
+    host = config['HOST'],
+    user = config['USER'],
+    password = config['PASSWORD'])
+```
+
+And with our db connection, we can populate the database. Writing SQL for this in Python is easy.
+
+```
+def add_inputs_to_weather_db(dbConnection, data):
+    
+    cursor = dbConnection.cursor()
+    
+    sql = ("INSERT INTO weather"
+            '(datetime, "PM25", "PM10", "SO2", "NO2", "CO", "O3", "TEMP", "PRES", "DEWP", "RAIN", "sin_time", "cos_time", "wx", "wy")'
+            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            "ON CONFLICT (datetime) DO NOTHING;")
+    
+    cursor.execute(sql, data)
+    
+    dbConnection.commit()
+    
+    
+def add_inputs_to_prediction_db(dbConnection, prediction):
+    
+    cursor = dbConnection.cursor()
+    
+    sql = ("INSERT INTO predictions"
+            '(datetime, "PM25")'
+            "VALUES (%s, %s)"
+            "ON CONFLICT (datetime) DO NOTHING;")
+    
+    cursor.execute(sql, prediction)
+    
+    dbConnection.commit()
+  ```
+
+With the database set up, we really just need to populate it. Where to get data from though...? Ahh yes, I can use the OpenWeatherMap API to get the current weather conditions as well as the previous 3 72 hours. One problem though - there's no pollution data. Also, the data is in different units than the model expects. We'll have to preprocess many features. This will come down to converting the temperature units and engineering time-based features.
