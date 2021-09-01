@@ -340,4 +340,72 @@ def add_inputs_to_prediction_db(dbConnection, prediction):
     dbConnection.commit()
   ```
 
-With the database set up, we really just need to populate it. Where to get data from though...? Ahh yes, I can use the OpenWeatherMap API to get the current weather conditions as well as the previous 3 72 hours. One problem though - there's no pollution data. Also, the data is in different units than the model expects. We'll have to preprocess many features. This will come down to converting the temperature units and engineering time-based features.
+With the database set up, we really just need to populate it. Where to get data from though...? Ahh yes, I can use the OpenWeatherMap API to get the current weather conditions as well as the previous 3 72 hours. One problem though - there's no pollution data. Also, the data is in different units than the model expects. We'll have to preprocess many features. This will come down to converting the temperature units and engineering the time and wind features using the same techniques we used when training the model. I didn't find any APIs that deliver free hourly atmospheric gas readings for Beijing, so I think web scraping is my best option here. I wrapped up my API call and web scraping script into one do-it-all input-getting function:
+
+```
+def get_inputs() -> pd.Series:
+    
+    # defining time variables to get the appropriate history
+    current_time = int(time.time())
+    previous_three_days = current_time - 86400*3 # number of seconds in one day = 86400
+    
+    # preparing the API call
+    API_key = config['API_KEY']
+    latitude = '39.9497'
+    longitude = '116.3891'
+    API_url_history = f'https://api.openweathermap.org/data/2.5/onecall/timemachine?lat={latitude}&lon={longitude}&dt={previous_three_days}&appid={API_key}'
+    API_url_current = f'https://api.openweathermap.org/data/2.5/weather?lat={latitude}&lon={longitude}&appid={API_key}'
+    
+    # get weather data via API call
+    response_current = requests.get(API_url_current)
+    response_history = requests.get(API_url_history)
+    weather_data_current = json.loads(response_current.text)
+    weather_data_history = json.loads(response_history.text)
+
+    # scrape page for pollutant info
+    webpage_url = 'https://aqicn.org/city/beijing/dongchengdongsi/'
+    dfs = pd.read_html(webpage_url)
+    pollutants = dfs[4].iloc[1:7,0:2]
+    pollutants = check_float(pollutants)
+    
+    # turn wind features into the wind vector used during training
+    (wx, wy) = get_wind_vectors(weather_data_current['wind']['deg'], weather_data_current['wind']['speed'])
+    
+    dt = datetime.fromtimestamp(weather_data_current['dt'])
+    
+    inputs = {
+        'datetime' : dt.replace(second=0, minute=0),
+        'PM25': np.float64(dfs[4].iloc[1][1]),
+        'PM10' : np.float64(dfs[4].iloc[2][1]),
+        'SO2' : np.float64(dfs[4].iloc[5][1]),
+        'NO2' : np.float64(dfs[4].iloc[4][1]),
+        'CO' : np.float64(dfs[4].iloc[6][1]),
+        'O3' : np.float64(dfs[4].iloc[3][1]),
+        'TEMP' : K_to_C(weather_data_current['main']['temp']), 
+        'PRES' : np.float64(weather_data_current['main']['pressure']),
+        'DEWP' : K_to_C(weather_data_history['current']['dew_point']),
+        'RAIN' : np.float64(0.0),
+        'sin time' : np.sin(2*np.pi*weather_data_current['dt']/(24*60*60)),
+        'cos time' :np.cos(2*np.pi*weather_data_current['dt']/(24*60*60)),
+        'wx' : wx,
+        'wy' : wy
+        }
+    
+
+    # check if there is any rain accumulation
+    if 'rain' in weather_data_current.keys():
+        inputs['RAIN'] = weather_data_current['rain']['1h']
+
+    return pd.Series(inputs), pd.Series(inputs).to_json()
+```
+
+And using the add_input_to_weather_db function defined earlier, all this data can be added at to the defined weather database whenever we like. But remember, our model needs 72 hours of data to make a prediction - ideally that data will consist of consistent hourly readings...not a collection of random measurements that skip hours at a time. We need a solution that can execute this function call each hour. Fortunately, there is a really good solution for this offered by Amazon Web Services. One can easily upload his or her script to Lambda and have that script executed in intervals down to 5 minutes. Currently, Amazon won't accept my credit card because Amazon is being Amazon, so I can't access these services. I also don't want to leave my computer on and running a script continuously. Since this project is mainly for demonstration purposes, I'm going to go ahead and use fragmented, somewhat sparse data for the predictions.
+
+I've tested the functionality, and all is good. I can pull data from the web, feed it to a database, use the data to predict a future PM2.5 value, and can then store that value into a predictions table. Cool. Now let's package it up into a full-fledged app. I'll use Flask for this. It's a nice, simple microframework that seems sorta perfect for non-web developers, as one can quickly get a data science/ML application up and running in no time. I won't discuss the Flask code here, but [take a look at the repo](https://github.com/jrcauthen/pollution-flask-app) to get an idea of how it works. The app is served over a local server and allows a user to see the data from the previous three days, to request the current atmospheric conditions, and to make a prediction for the PM2.5 value 24 hours in the future, and sending all of this to our weather database. 
+
+{% include image.html image="projects/proj-1/localhost_home.png" %}
+{% include image.html image="projects/proj-1/localhost_predict.png" %}
+
+#### Next steps
+
+It's good practice to dockerize our applications to make a teammates' and users' lives as easy as possible. Since this is a flask app with a Postgresql database, we will need to make two docker containers - one for flask and one for our database. Docker-compose is a great tool that helps us to organize applications with multiple containers, so I'll also be using that. I've containerized both services using docker-compose, but there is a problem in my way now. Docker spins up a brand new PostgreSQL database, which is a problem, because the model depends on previous data. The app is working, but there is no functionality since the database is empty. My next task is to populate find out how I can best populate this new database before the app runs - persisting data won't be a problem so long as I use the volumes in the docker container.
