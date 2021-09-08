@@ -406,6 +406,6 @@ And using the add_input_to_weather_db function defined earlier, all this data ca
 
 It's good practice (I guess the common practice, really) to dockerize applications to teammates' and users' lives as easy as possible. Since this is a flask app with a Postgresql database, we will need to make two docker containers - one for flask and one for our database. Docker-compose is a great tool that helps us to organize applications with multiple containers, so I'll also be using that. I've containerized both services using docker-compose, included an initialization script to create the appropriate database and tables, and included volumes so that our data persists even when the docker container is spun down. 
 
-## Next steps
+#### Next steps
 
 The next step is to deploy the app to a major cloud service provider and hook the script up to a virtual machine that can execute our script each hour, e.g., an EC2 instance that runs our script over AWS Lambda. 
