@@ -21,7 +21,7 @@ projects:
 
 social:
 - {icon: 'github',    link: 'https://github.com/jrcauthen'}
-- {icon: 'envelope',  link: 'mailto:mailto:justinrcauthen@gmail.com.com'}
+- {icon: 'envelope',  link: 'mailto:justinrcauthen@gmail.com'}
 
 # social network icons available: 'twitter' / 'facebook' / 'github' / 'pinterest' 'google-plus' / 'linkedin' / 'youtube' / 'instagram' / 'dribbble' / 'behance' / 'soundcloud' / 'vine'
 
